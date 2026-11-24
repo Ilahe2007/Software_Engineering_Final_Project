@@ -1,0 +1,22 @@
+# Python virtual environment (PW#2)
+/.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local SQLite database created by Flask-SQLAlchemy
+instance/
+*.db
+
+# Secrets: commit .env.example, never .env
+.env
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
