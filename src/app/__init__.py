@@ -31,7 +31,7 @@ def create_app(config_name=None):
     _register_blueprints(app)
 
     with app.app_context():
-        # from . import models  # noqa: F401  (registers the tables)
+        from . import models  # noqa: F401  (registers the tables)
 
         # Until Part C adds migrations (Flask-Migrate/Alembic), create tables directly.
         db.create_all()
