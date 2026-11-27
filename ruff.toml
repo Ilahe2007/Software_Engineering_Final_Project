@@ -1,0 +1,17 @@
+# Linter settings for CI (PW#4). Run locally with: ruff check src tests
+line-length = 120
+target-version = "py312"
+src = ["src", "tests"]
+
+[lint]
+# E/W: PEP 8 style, F: real bugs (unused names, undefined variables), B: likely bugs, I: import order.
+select = ["E", "F", "W", "B", "I"]
+# B904 ("raise ... from err") is not part of our conventions; see CONTRIBUTING.md, Error Handling.
+ignore = ["B904"]
+
+[lint.per-file-ignores]
+# CONTRIBUTING.md allows long Swagger parameter lines inside route docstrings.
+"**/routes.py" = ["E501"]
+
+[lint.isort]
+known-first-party = ["app", "conftest"]

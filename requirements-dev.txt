@@ -1,0 +1,6 @@
+# Tools for CI and local checks (PW#4). Not installed in the Docker image.
+# Install with: pip install -r requirements.txt -r requirements-dev.txt
+bandit==1.9.4
+pip-audit==2.10.1
+pytest-cov==7.1.0
+ruff==0.17.6

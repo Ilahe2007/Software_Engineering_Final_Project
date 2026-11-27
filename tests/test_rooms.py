@@ -38,10 +38,10 @@ def test_get_missing_room(client, seeded):
     assert client.get("/api/v1/rooms/9999").status_code == 404
 
 
-def test_create_room_needs_admin(client, seeded):
+def test_create_room_needs_admin(client, seeded, student_headers):
     body = {"code": "C-1", "building": "C", "capacity": 10, "room_type": "lab"}
     assert client.post("/api/v1/rooms", json=body).status_code == 401
-    assert client.post("/api/v1/rooms", json=body, headers={"X-User-Role": "student"}).status_code == 403
+    assert client.post("/api/v1/rooms", json=body, headers=student_headers).status_code == 403
 
 
 def test_create_room_reports_every_error(client, admin_headers, seeded):

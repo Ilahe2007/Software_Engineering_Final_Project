@@ -69,7 +69,7 @@ def create_room():
     """Create a room (admin).
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - in: body
         name: body
@@ -107,7 +107,7 @@ def update_room(room_id):
     """Change some fields of a room (admin).
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - {name: room_id, in: path, type: integer, required: true}
       - in: body
@@ -147,7 +147,7 @@ def deactivate_room(room_id):
     """Deactivate a room (admin). It is hidden from lists but kept for booking history.
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - {name: room_id, in: path, type: integer, required: true}
     responses:
@@ -179,7 +179,7 @@ def create_room_type():
     """Create a room type (admin).
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - in: body
         name: body
@@ -204,7 +204,7 @@ def update_room_type(room_type_id):
     """Rename a room type or change its description (admin).
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - {name: room_type_id, in: path, type: integer, required: true}
       - in: body
@@ -237,7 +237,7 @@ def delete_room_type(room_type_id):
     """Delete a room type (admin). Refused while any room still has this type.
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - {name: room_type_id, in: path, type: integer, required: true}
     responses:
@@ -272,7 +272,7 @@ def create_equipment():
     """Create an equipment name (admin).
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - in: body
         name: body
@@ -297,7 +297,7 @@ def update_equipment(equipment_id):
     """Rename a piece of equipment (admin). Every room that has it shows the new name.
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - {name: equipment_id, in: path, type: integer, required: true}
       - in: body
@@ -330,7 +330,7 @@ def delete_equipment(equipment_id):
     """Delete a piece of equipment (admin). Refused while any room still has it.
     ---
     tags: [Rooms (admin)]
-    security: [{DevRole: []}]
+    security: [{Bearer: []}]
     parameters:
       - {name: equipment_id, in: path, type: integer, required: true}
     responses:
