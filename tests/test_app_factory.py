@@ -39,7 +39,7 @@ def test_health(client):
 def test_swagger_docs_are_served(client):
     assert client.get("/docs/").status_code == 200
     spec = client.get("/apispec_1.json").get_json()
-    # assert "/api/v1/rooms" in spec["paths"]
+    assert "/api/v1/rooms" in spec["paths"]
     # assert "/api/v1/availability" in spec["paths"]
 
 
