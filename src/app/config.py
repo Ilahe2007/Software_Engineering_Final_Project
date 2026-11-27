@@ -5,9 +5,12 @@ create_app() picks one of these by name ("development", "testing",
 
 If APP_ENV is missing too, the app starts in PRODUCTION mode. A deployment that
 forgets the variable then fails safely instead of running with the development
-shortcuts (header-based admin, debug mode) switched on.
+shortcuts (debug mode, the development secret key) switched on.
 """
 import os
+
+# Only for local development. It is public on purpose: create_app() refuses to start in production with it.
+DEV_SECRET_KEY = "dev-only-change-me-this-key-is-public"  # nosec B105
 
 
 def _database_url(default=None):
@@ -19,26 +22,30 @@ def _database_url(default=None):
 
 
 class BaseConfig:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-change-me")
+    # Signs the login tokens (JWT, HS256). Anyone who knows it can log in as anyone.
+    SECRET_KEY = os.environ.get("SECRET_KEY", DEV_SECRET_KEY)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Rooms can be used between these hours. Free slots are computed inside this window.
     OPENING_HOUR = int(os.environ.get("OPENING_HOUR", 8))
     CLOSING_HOUR = int(os.environ.get("CLOSING_HOUR", 20))
 
-    # Temporary header-based auth until Part B ships real login. Never on in production.
-    ALLOW_DEV_AUTH = False
+    # Login (Part B). A token stops working after this many minutes; the user logs in again.
+    JWT_ACCESS_MINUTES = int(os.environ.get("JWT_ACCESS_MINUTES", 60))
+    # Brute-force protection: this many wrong passwords in a row lock the account for LOCKOUT_MINUTES.
+    MAX_FAILED_LOGINS = int(os.environ.get("MAX_FAILED_LOGINS", 5))
+    LOCKOUT_MINUTES = int(os.environ.get("LOCKOUT_MINUTES", 15))
 
     SWAGGER = {
         "title": "University Room Management API",
         "uiversion": 3,
         "specs_route": "/docs/",
         "securityDefinitions": {
-            "DevRole": {
+            "Bearer": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "X-User-Role",
-                "description": "Temporary: type 'admin' to call admin endpoints (dev/test only).",
+                "name": "Authorization",
+                "description": "Log in with POST /api/v1/auth/login, then type: Bearer <access_token>",
             }
         },
     }
@@ -47,13 +54,12 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = _database_url("sqlite:///dev.db")
-    ALLOW_DEV_AUTH = True
 
 
 class TestingConfig(BaseConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
-    ALLOW_DEV_AUTH = True
+    SECRET_KEY = "testing-only-secret-key-at-least-32-bytes"  # nosec B105
 
 
 class ProductionConfig(BaseConfig):
