@@ -1,0 +1,10 @@
+# Secret scanning (CI job "Secret scan"). Uses gitleaks' default rules plus this allowlist.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Keys that are public on purpose: development and tests only, refused in production by create_app()"
+regexes = [
+    '''dev-only-change-me-this-key-is-public''',
+    '''testing-only-secret-key-at-least-32-bytes''',
+]

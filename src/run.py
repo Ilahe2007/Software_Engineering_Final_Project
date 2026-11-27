@@ -13,4 +13,6 @@ from app import create_app
 app = create_app("development" if "--dev" in sys.argv else None)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    # 0.0.0.0 is required inside a Docker container and on Render; on 127.0.0.1
+    # nothing outside the container could reach the app.
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))  # nosec B104
