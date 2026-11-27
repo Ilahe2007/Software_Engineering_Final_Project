@@ -47,6 +47,7 @@ def create_app(config_name=None):
 def _register_blueprints(app):
     # from .availability import bp as availability_bp
     from .auth import bp as auth_bp
+    from .bookings import bp as bookings_bp
     from .main import bp as main_bp
     from .rooms import bp as rooms_bp
 
@@ -54,7 +55,7 @@ def _register_blueprints(app):
     app.register_blueprint(rooms_bp, url_prefix="/api/v1")
     # app.register_blueprint(availability_bp, url_prefix="/api/v1")
     app.register_blueprint(auth_bp, url_prefix="/api/v1/auth")
-    # Part B: app.register_blueprint(bookings_bp, url_prefix="/api/v1")
+    app.register_blueprint(bookings_bp, url_prefix="/api/v1")
     # Part D: app.register_blueprint(schedule_bp, url_prefix="/api/v1/admin/schedule")
     # Part E: app.register_blueprint(notifications_bp, url_prefix="/api/v1")
 
